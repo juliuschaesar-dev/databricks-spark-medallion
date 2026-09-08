@@ -5,6 +5,12 @@
   <text x="575" y="30" text-anchor="middle" font-size="20" font-weight="bold" fill="#111">CSV &#8594; Bronze &#8594; Silver &#8594; Gold Medallion Pipeline</text>
   <text x="575" y="48" text-anchor="middle" font-size="11" fill="#666" font-style="italic">databricks-medallion &#8212; Unity Catalog / Delta Lake / Spark SQL data flow</text>
 
+  <!-- Databricks brand mark (official logomark, source: simple-icons) -->
+  <g transform="translate(20,12) scale(0.85)" fill="#FF3621">
+    <path d="M.95 14.184L12 20.403l9.919-5.55v2.21L12 22.662l-10.484-5.96-.565.308v.77L12 24l11.05-6.218v-4.317l-.515-.309L12 19.118l-9.867-5.653v-2.21L12 16.805l11.05-6.218V6.32l-.515-.308L12 11.974 2.647 6.681 12 1.388l7.76 4.368.668-.411v-.566L12 0 .95 6.27v.72L12 13.207l9.919-5.55v2.26L12 15.52 1.516 9.56l-.565.308Z"/>
+  </g>
+  <text x="46" y="28" font-size="12" font-weight="bold" fill="#FF3621">Databricks</text>
+
   <!-- Arrow markers -->
   <defs>
     <marker id="arrowSolid" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto" markerUnits="strokeWidth">
@@ -21,7 +27,7 @@
   <!-- ============ Cross-cutting top boxes ============ -->
   <g>
     <rect x="330" y="62" width="210" height="48" rx="8" fill="#fff" stroke="#2f6fed" stroke-width="1.3"/>
-    <circle cx="349" cy="86" r="9" fill="#eaf1ff" stroke="#2f6fed"/>
+    <circle cx="349" cy="86" r="10" fill="#eaf1ff" stroke="#2f6fed"/>
     <text x="349" y="90" text-anchor="middle" font-size="8" fill="#2f6fed" font-weight="bold">UC</text>
     <text x="365" y="82" font-size="11" font-weight="bold" fill="#222">Unity Catalog</text>
     <text x="365" y="95" font-size="8.5" fill="#555">catalog.schema.table governance,</text>
@@ -30,7 +36,7 @@
 
   <g>
     <rect x="700" y="62" width="210" height="48" rx="8" fill="#fff" stroke="#0db7ed" stroke-width="1.3"/>
-    <circle cx="719" cy="86" r="9" fill="#e6f9ff" stroke="#0db7ed"/>
+    <circle cx="719" cy="86" r="10" fill="#e6f9ff" stroke="#0db7ed"/>
     <text x="719" y="90" text-anchor="middle" font-size="8" fill="#0db7ed" font-weight="bold">CI</text>
     <text x="735" y="82" font-size="11" font-weight="bold" fill="#222">CI / Docker</text>
     <text x="735" y="95" font-size="8.5" fill="#555">GitHub Actions: docker build +</text>
@@ -143,7 +149,7 @@
   <!-- ============ Bottom: one-shot setup + orchestrator ============ -->
   <g>
     <rect x="180" y="360" width="150" height="90" rx="8" fill="#fff" stroke="#2e7d32" stroke-width="1.3" stroke-dasharray="5,3"/>
-    <circle cx="200" cy="382" r="9" fill="#e8f5e9" stroke="#2e7d32"/>
+    <circle cx="200" cy="382" r="10" fill="#e8f5e9" stroke="#2e7d32"/>
     <text x="200" y="386" text-anchor="middle" font-size="7.5" fill="#2e7d32" font-weight="bold">UC</text>
     <text x="216" y="379" font-size="10.5" font-weight="bold" fill="#222">uc_setup (init)</text>
     <text x="192" y="397" font-size="8" fill="#444">run_uc_setup.py</text>
@@ -154,7 +160,7 @@
 
   <g>
     <rect x="430" y="360" width="190" height="90" rx="8" fill="#fff" stroke="#2e7d32" stroke-width="1.3" stroke-dasharray="5,3"/>
-    <circle cx="450" cy="382" r="9" fill="#e8f5e9" stroke="#2e7d32"/>
+    <circle cx="450" cy="382" r="10" fill="#e8f5e9" stroke="#2e7d32"/>
     <text x="450" y="386" text-anchor="middle" font-size="7.5" fill="#2e7d32" font-weight="bold">&#9654;</text>
     <text x="466" y="379" font-size="10.5" font-weight="bold" fill="#222">orchestrator</text>
     <text x="442" y="397" font-size="8" fill="#444">notebooks/00_run_pipeline.py</text>
