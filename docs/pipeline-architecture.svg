@@ -1,0 +1,186 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1150 660" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <rect x="0" y="0" width="1150" height="660" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="575" y="30" text-anchor="middle" font-size="20" font-weight="bold" fill="#111">CSV &#8594; Bronze &#8594; Silver &#8594; Gold Medallion Pipeline</text>
+  <text x="575" y="48" text-anchor="middle" font-size="11" fill="#666" font-style="italic">databricks-medallion &#8212; Unity Catalog / Delta Lake / Spark SQL data flow</text>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowSolid" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#222"/>
+    </marker>
+    <marker id="arrowGray" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#2f6fed"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#2e7d32"/>
+    </marker>
+  </defs>
+
+  <!-- ============ Cross-cutting top boxes ============ -->
+  <g>
+    <rect x="330" y="62" width="210" height="48" rx="8" fill="#fff" stroke="#2f6fed" stroke-width="1.3"/>
+    <circle cx="349" cy="86" r="9" fill="#eaf1ff" stroke="#2f6fed"/>
+    <text x="349" y="90" text-anchor="middle" font-size="8" fill="#2f6fed" font-weight="bold">UC</text>
+    <text x="365" y="82" font-size="11" font-weight="bold" fill="#222">Unity Catalog</text>
+    <text x="365" y="95" font-size="8.5" fill="#555">catalog.schema.table governance,</text>
+    <text x="365" y="105" font-size="8.5" fill="#555">grants &amp; lineage across all layers</text>
+  </g>
+
+  <g>
+    <rect x="700" y="62" width="210" height="48" rx="8" fill="#fff" stroke="#0db7ed" stroke-width="1.3"/>
+    <circle cx="719" cy="86" r="9" fill="#e6f9ff" stroke="#0db7ed"/>
+    <text x="719" y="90" text-anchor="middle" font-size="8" fill="#0db7ed" font-weight="bold">CI</text>
+    <text x="735" y="82" font-size="11" font-weight="bold" fill="#222">CI / Docker</text>
+    <text x="735" y="95" font-size="8.5" fill="#555">GitHub Actions: docker build +</text>
+    <text x="735" y="105" font-size="8.5" fill="#555">pytest on every push / PR</text>
+  </g>
+
+  <!-- dashed governance lines from Unity Catalog / CI down to main boxes -->
+  <path d="M400,110 L255,165" stroke="#2f6fed" stroke-width="1" stroke-dasharray="3,3" fill="none"/>
+  <path d="M435,110 L425,165" stroke="#2f6fed" stroke-width="1" stroke-dasharray="3,3" fill="none"/>
+  <path d="M470,110 L605,165" stroke="#2f6fed" stroke-width="1" stroke-dasharray="3,3" fill="none"/>
+  <path d="M505,110 L795,165" stroke="#2f6fed" stroke-width="1" stroke-dasharray="3,3" fill="none"/>
+
+  <path d="M760,110 L255,165" stroke="#0db7ed" stroke-width="1" stroke-dasharray="3,3" fill="none"/>
+  <path d="M800,110 L425,165" stroke="#0db7ed" stroke-width="1" stroke-dasharray="3,3" fill="none"/>
+  <path d="M840,110 L605,165" stroke="#0db7ed" stroke-width="1" stroke-dasharray="3,3" fill="none"/>
+  <path d="M880,110 L795,165" stroke="#0db7ed" stroke-width="1" stroke-dasharray="3,3" fill="none"/>
+
+  <!-- ============ Main row ============ -->
+  <!-- 1. CSV source -->
+  <g>
+    <rect x="30" y="165" width="130" height="130" rx="8" fill="#fff" stroke="#222" stroke-width="1.3"/>
+    <circle cx="50" cy="188" r="10" fill="#f2f2f2" stroke="#666"/>
+    <text x="50" y="192" text-anchor="middle" font-size="8" fill="#666" font-weight="bold">CSV</text>
+    <text x="66" y="184" font-size="11.5" font-weight="bold" fill="#222">data source</text>
+    <text x="42" y="205" font-size="8.5" fill="#444">orders</text>
+    <text x="42" y="217" font-size="8.5" fill="#444">order_items</text>
+    <text x="42" y="229" font-size="8.5" fill="#444">customer_master</text>
+    <text x="42" y="241" font-size="8.5" fill="#444">product_catalog</text>
+    <text x="42" y="257" font-size="8" fill="#888" font-style="italic">raw e-commerce</text>
+    <text x="42" y="267" font-size="8" fill="#888" font-style="italic">sales dataset</text>
+  </g>
+
+  <!-- 2. Bronze -->
+  <g>
+    <rect x="180" y="165" width="150" height="130" rx="8" fill="#fff" stroke="#222" stroke-width="1.3"/>
+    <circle cx="200" cy="188" r="10" fill="#fbe9dd" stroke="#cd7f32"/>
+    <text x="200" y="192" text-anchor="middle" font-size="8" fill="#cd7f32" font-weight="bold">B</text>
+    <text x="216" y="184" font-size="11.5" font-weight="bold" fill="#222">Bronze</text>
+    <text x="192" y="205" font-size="8.5" fill="#444">src/bronze/ingest.py</text>
+    <text x="192" y="219" font-size="8.5" fill="#444">CSV &#8594; landing Volume &#8594;</text>
+    <text x="192" y="231" font-size="8.5" fill="#444">raw_orders, raw_order_items,</text>
+    <text x="192" y="243" font-size="8.5" fill="#444">raw_customers, raw_products</text>
+    <text x="192" y="258" font-size="8" fill="#888" font-style="italic">schema-as-is +</text>
+    <text x="192" y="269" font-size="8" fill="#888" font-style="italic">_source_file, _ingested_at</text>
+  </g>
+
+  <!-- 3. Silver -->
+  <g>
+    <rect x="350" y="165" width="150" height="130" rx="8" fill="#fff" stroke="#222" stroke-width="1.3"/>
+    <circle cx="370" cy="188" r="10" fill="#eef0f2" stroke="#8a8f98"/>
+    <text x="370" y="192" text-anchor="middle" font-size="8" fill="#8a8f98" font-weight="bold">S</text>
+    <text x="386" y="184" font-size="11.5" font-weight="bold" fill="#222">Silver</text>
+    <text x="362" y="205" font-size="8.5" fill="#444">src/silver/run_silver.py</text>
+    <text x="362" y="219" font-size="8.5" fill="#444">orders_cleaned</text>
+    <text x="362" y="231" font-size="8.5" fill="#444">order_items_cleaned</text>
+    <text x="362" y="243" font-size="8.5" fill="#444">customers/products_cleaned</text>
+    <text x="362" y="258" font-size="8" fill="#888" font-style="italic">dedup (ROW_NUMBER),</text>
+    <text x="362" y="269" font-size="8" fill="#888" font-style="italic">null handling, type casts</text>
+  </g>
+
+  <!-- 4. Gold - star schema -->
+  <g>
+    <rect x="520" y="165" width="170" height="130" rx="8" fill="#fff" stroke="#222" stroke-width="1.3"/>
+    <circle cx="540" cy="188" r="10" fill="#fdf3d0" stroke="#c9a227"/>
+    <text x="540" y="192" text-anchor="middle" font-size="8" fill="#c9a227" font-weight="bold">G</text>
+    <text x="556" y="184" font-size="11.5" font-weight="bold" fill="#222">Gold &#8211; Star Schema</text>
+    <text x="532" y="206" font-size="8.5" fill="#444">src/gold/run_gold.py</text>
+    <text x="532" y="222" font-size="8.5" fill="#444">dim_customer</text>
+    <text x="532" y="234" font-size="8.5" fill="#444">dim_product</text>
+    <text x="532" y="246" font-size="8.5" fill="#444">fact_sales</text>
+    <text x="532" y="261" font-size="8" fill="#888" font-style="italic">fact grain: 1 row /</text>
+    <text x="532" y="272" font-size="8" fill="#888" font-style="italic">order line item</text>
+  </g>
+
+  <!-- 5. Gold - datamart -->
+  <g>
+    <rect x="710" y="165" width="170" height="130" rx="8" fill="#fff" stroke="#222" stroke-width="1.3"/>
+    <circle cx="730" cy="188" r="10" fill="#fdf3d0" stroke="#c9a227"/>
+    <text x="730" y="192" text-anchor="middle" font-size="8" fill="#c9a227" font-weight="bold">DM</text>
+    <text x="746" y="184" font-size="11.5" font-weight="bold" fill="#222">Gold &#8211; Datamart</text>
+    <text x="722" y="204" font-size="8" fill="#444">dm_sales_summary_daily/monthly</text>
+    <text x="722" y="215" font-size="8" fill="#444">dm_product_performance</text>
+    <text x="722" y="226" font-size="8" fill="#444">dm_customer_rfm</text>
+    <text x="722" y="237" font-size="8" fill="#444">dm_sales_by_region</text>
+    <text x="722" y="248" font-size="8" fill="#444">dm_return_analysis</text>
+    <text x="722" y="259" font-size="8" fill="#444">dm_marketing_channel_perf.</text>
+    <text x="722" y="272" font-size="8" fill="#888" font-style="italic">analytics/BI-ready</text>
+  </g>
+
+  <!-- 6. BI / Analytics (external consumer, dotted = not part of this repo) -->
+  <g>
+    <rect x="900" y="165" width="150" height="130" rx="8" fill="#fff" stroke="#222" stroke-width="1.3" stroke-dasharray="4,3"/>
+    <circle cx="920" cy="188" r="10" fill="#e6f9ff" stroke="#0db7ed"/>
+    <text x="920" y="192" text-anchor="middle" font-size="8" fill="#0db7ed" font-weight="bold">BI</text>
+    <text x="936" y="184" font-size="11.5" font-weight="bold" fill="#222">Analytics / BI</text>
+    <text x="912" y="205" font-size="8.5" fill="#444">SQL Warehouse queries,</text>
+    <text x="912" y="217" font-size="8.5" fill="#444">dashboards, notebooks</text>
+    <text x="912" y="233" font-size="8" fill="#888" font-style="italic">consumes gold-layer</text>
+    <text x="912" y="244" font-size="8" fill="#888" font-style="italic">dim_*/fact_*/dm_* tables</text>
+    <text x="912" y="260" font-size="8" fill="#888" font-style="italic">(external to this repo)</text>
+  </g>
+
+  <!-- data-flow arrows between main boxes -->
+  <path d="M160,230 L178,230" stroke="#222" stroke-width="1.4" fill="none" marker-end="url(#arrowSolid)"/>
+  <path d="M330,230 L348,230" stroke="#222" stroke-width="1.4" fill="none" marker-end="url(#arrowSolid)"/>
+  <path d="M500,230 L518,230" stroke="#222" stroke-width="1.4" fill="none" marker-end="url(#arrowSolid)"/>
+  <path d="M690,230 L708,230" stroke="#222" stroke-width="1.4" fill="none" marker-end="url(#arrowSolid)"/>
+  <path d="M880,230 L898,230" stroke="#222" stroke-width="1.4" fill="none" marker-end="url(#arrowSolid)"/>
+
+  <!-- ============ Bottom: one-shot setup + orchestrator ============ -->
+  <g>
+    <rect x="180" y="360" width="150" height="90" rx="8" fill="#fff" stroke="#2e7d32" stroke-width="1.3" stroke-dasharray="5,3"/>
+    <circle cx="200" cy="382" r="9" fill="#e8f5e9" stroke="#2e7d32"/>
+    <text x="200" y="386" text-anchor="middle" font-size="7.5" fill="#2e7d32" font-weight="bold">UC</text>
+    <text x="216" y="379" font-size="10.5" font-weight="bold" fill="#222">uc_setup (init)</text>
+    <text x="192" y="397" font-size="8" fill="#444">run_uc_setup.py</text>
+    <text x="192" y="409" font-size="8" fill="#444">CREATE CATALOG/SCHEMA</text>
+    <text x="192" y="421" font-size="8" fill="#444">+ landing Volume</text>
+    <text x="192" y="436" font-size="7.5" fill="#888" font-style="italic">one-shot, metastore admin</text>
+  </g>
+
+  <g>
+    <rect x="430" y="360" width="190" height="90" rx="8" fill="#fff" stroke="#2e7d32" stroke-width="1.3" stroke-dasharray="5,3"/>
+    <circle cx="450" cy="382" r="9" fill="#e8f5e9" stroke="#2e7d32"/>
+    <text x="450" y="386" text-anchor="middle" font-size="7.5" fill="#2e7d32" font-weight="bold">&#9654;</text>
+    <text x="466" y="379" font-size="10.5" font-weight="bold" fill="#222">orchestrator</text>
+    <text x="442" y="397" font-size="8" fill="#444">notebooks/00_run_pipeline.py</text>
+    <text x="442" y="409" font-size="8" fill="#444">bronze.run() &#8594; run_silver()</text>
+    <text x="442" y="421" font-size="8" fill="#444">&#8594; run_gold(), in order</text>
+    <text x="442" y="436" font-size="7.5" fill="#888" font-style="italic">Databricks notebook / Job</text>
+  </g>
+
+  <!-- green dashed orchestration arrows going up into the layer boxes -->
+  <path d="M255,360 L255,297" stroke="#2e7d32" stroke-width="1.2" stroke-dasharray="4,3" fill="none" marker-end="url(#arrowGreen)"/>
+  <path d="M480,360 L255,297" stroke="#2e7d32" stroke-width="1.2" stroke-dasharray="4,3" fill="none" marker-end="url(#arrowGreen)"/>
+  <path d="M500,360 L425,297" stroke="#2e7d32" stroke-width="1.2" stroke-dasharray="4,3" fill="none" marker-end="url(#arrowGreen)"/>
+  <path d="M560,360 L600,297" stroke="#2e7d32" stroke-width="1.2" stroke-dasharray="4,3" fill="none" marker-end="url(#arrowGreen)"/>
+
+  <!-- ============ Legend ============ -->
+  <g font-size="9.5" fill="#333">
+    <line x1="60" y1="590" x2="100" y2="590" stroke="#222" stroke-width="1.4" marker-end="url(#arrowSolid)"/>
+    <text x="108" y="593">data flow (CSV &#8594; Delta write)</text>
+
+    <line x1="330" y1="590" x2="370" y2="590" stroke="#2f6fed" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#arrowGray)"/>
+    <text x="378" y="593">catalog / governance (cross-cutting)</text>
+
+    <line x1="640" y1="590" x2="680" y2="590" stroke="#2e7d32" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#arrowGreen)"/>
+    <text x="688" y="593">one-shot setup / orchestration call</text>
+
+    <rect x="900" y="583" width="26" height="14" fill="#fff" stroke="#222" stroke-width="1" stroke-dasharray="4,3"/>
+    <text x="934" y="593">external / not in this repo</text>
+  </g>
+</svg>
