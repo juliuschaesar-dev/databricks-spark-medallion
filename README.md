@@ -49,7 +49,7 @@ databricks-medallion/
 │   └── gold/             joins + aggregations (SQL)
 ├── uc_setup/             one-time catalog/schema/grant bootstrap
 ├── tests/                pytest unit tests (no cluster required)
-├── data source/          raw source CSVs
+├── data_source/          raw source CSVs
 └── .github/workflows/    CI (builds the Docker image, runs pytest inside it, on push/PR)
 ```
 
@@ -79,7 +79,7 @@ databricks-medallion/
    python -m uc_setup.run_uc_setup
    ```
 
-4. Upload the CSVs under `data source/` to the landing Volume
+4. Upload the CSVs under `data_source/` to the landing Volume
    (`/Volumes/databricks_medallion/bronze/landing` by default — see `SOURCE_VOLUME_PATH` in `.env`).
 
 5. Run the pipeline (bronze → silver → gold), either:

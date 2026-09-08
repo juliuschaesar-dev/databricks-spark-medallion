@@ -1,7 +1,7 @@
 import csv
 from pathlib import Path
 
-DATA_DIR = Path(__file__).parent.parent / "data source"
+DATA_DIR = Path(__file__).parent.parent / "data_source"
 
 EXPECTED_COLUMNS = {
     "customer_master.csv": {"customer_id", "customer_name", "customer_segment"},
