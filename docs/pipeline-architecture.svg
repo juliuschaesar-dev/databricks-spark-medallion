@@ -117,7 +117,7 @@
     <circle cx="730" cy="188" r="10" fill="#fdf3d0" stroke="#c9a227"/>
     <text x="730" y="192" text-anchor="middle" font-size="8" fill="#c9a227" font-weight="bold">DM</text>
     <text x="746" y="184" font-size="11.5" font-weight="bold" fill="#222">Gold &#8211; Datamart</text>
-    <text x="722" y="204" font-size="8" fill="#444">dm_sales_summary_daily/monthly</text>
+    <text x="722" y="204" font-size="8" fill="#444">dm_sales_summary_daily</text>
     <text x="722" y="215" font-size="8" fill="#444">dm_product_performance</text>
     <text x="722" y="226" font-size="8" fill="#444">dm_customer_rfm</text>
     <text x="722" y="237" font-size="8" fill="#444">dm_sales_by_region</text>

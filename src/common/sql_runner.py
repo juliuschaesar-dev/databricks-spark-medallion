@@ -4,7 +4,6 @@ from pathlib import Path
 from pyspark.sql import SparkSession
 
 from src.common.config import BRONZE_SCHEMA, CATALOG, GOLD_SCHEMA, SILVER_SCHEMA
-from src.common.spark_session import get_spark
 
 
 def run_sql_file(spark: SparkSession, path: Path) -> None:
@@ -26,4 +25,4 @@ def run_sql_dir(spark: SparkSession, directory: Path) -> None:
 
 def run_layer(sql_dir: Path) -> None:
     """Gets a Spark session and runs every .sql file in `sql_dir`, in order."""
-    run_sql_dir(get_spark(), sql_dir)
+    run_sql_dir(SparkSession.builder.getOrCreate(), sql_dir)

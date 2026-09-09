@@ -36,11 +36,7 @@ SELECT
   CAST(is_repeat_customer AS BOOLEAN)      AS is_repeat_customer,
   CAST(customer_order_count AS INT)        AS customer_order_count,
   current_timestamp()                      AS _cleaned_at
-FROM (
-  SELECT *,
-         ROW_NUMBER() OVER (PARTITION BY order_id ORDER BY _ingested_at DESC) AS _rn
-  FROM {catalog}.{bronze_schema}.raw_orders
-  WHERE order_id IS NOT NULL
-    AND customer_id IS NOT NULL
-)
-WHERE _rn = 1;
+FROM {catalog}.{bronze_schema}.raw_orders
+WHERE order_id IS NOT NULL
+  AND customer_id IS NOT NULL
+QUALIFY ROW_NUMBER() OVER (PARTITION BY order_id ORDER BY _ingested_at DESC) = 1;

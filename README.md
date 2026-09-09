@@ -15,7 +15,7 @@ databricks_medallion
 ├── bronze  (raw_orders, raw_order_items, raw_customers, raw_products)
 ├── silver  (orders_cleaned, order_items_cleaned, customers_cleaned, products_cleaned)
 └── gold    (fact_sales, dim_customer, dim_product,
-             dm_sales_summary_daily, dm_sales_summary_monthly, dm_product_performance,
+             dm_sales_summary_daily, dm_product_performance,
              dm_customer_rfm, dm_sales_by_region, dm_return_analysis,
              dm_marketing_channel_performance)
 ```
@@ -30,7 +30,6 @@ Gold layer has two kinds of tables:
 | `dim_product` | 1 row / product | product dimension |
 | `fact_sales` | 1 row / order line item | core sales fact |
 | `dm_sales_summary_daily` | 1 row / day / channel | daily sales rollup |
-| `dm_sales_summary_monthly` | 1 row / month / channel | monthly sales trend |
 | `dm_product_performance` | 1 row / product | sales & profit by product |
 | `dm_customer_rfm` | 1 row / customer | Recency/Frequency/Monetary segmentation |
 | `dm_sales_by_region` | 1 row / region+country+state | geographic sales performance |

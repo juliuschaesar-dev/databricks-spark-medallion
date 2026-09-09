@@ -12,10 +12,6 @@ SELECT
   customer_postal_code,
   CAST(customer_acquisition_cost AS DOUBLE) AS customer_acquisition_cost,
   current_timestamp()                       AS _cleaned_at
-FROM (
-  SELECT *,
-         ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY _ingested_at DESC) AS _rn
-  FROM {catalog}.{bronze_schema}.raw_customers
-  WHERE customer_id IS NOT NULL
-)
-WHERE _rn = 1;
+FROM {catalog}.{bronze_schema}.raw_customers
+WHERE customer_id IS NOT NULL
+QUALIFY ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY _ingested_at DESC) = 1;

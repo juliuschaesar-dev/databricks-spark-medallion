@@ -10,10 +10,6 @@ SELECT
   CAST(product_cost AS DOUBLE)      AS product_cost,
   CAST(product_rating AS DOUBLE)    AS product_rating,
   current_timestamp()                AS _cleaned_at
-FROM (
-  SELECT *,
-         ROW_NUMBER() OVER (PARTITION BY product_id ORDER BY _ingested_at DESC) AS _rn
-  FROM {catalog}.{bronze_schema}.raw_products
-  WHERE product_id IS NOT NULL
-)
-WHERE _rn = 1;
+FROM {catalog}.{bronze_schema}.raw_products
+WHERE product_id IS NOT NULL
+QUALIFY ROW_NUMBER() OVER (PARTITION BY product_id ORDER BY _ingested_at DESC) = 1;

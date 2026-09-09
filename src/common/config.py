@@ -6,11 +6,8 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-def _env(key: str, default: str | None = None) -> str:
-    value = os.environ.get(key, default)
-    if value is None:
-        raise EnvironmentError(f"Missing required environment variable: {key}")
-    return value
+def _env(key: str, default: str) -> str:
+    return os.environ.get(key, default)
 
 
 CATALOG = _env("UC_CATALOG", "databricks_medallion")
