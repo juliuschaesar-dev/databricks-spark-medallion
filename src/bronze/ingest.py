@@ -4,6 +4,7 @@ from pyspark.sql import DataFrame, SparkSession
 from pyspark.sql import functions as F
 
 from src.common.config import BRONZE_SCHEMA, SOURCE_VOLUME_PATH, table
+from src.common.spark_session import get_spark
 
 
 @dataclass(frozen=True)
@@ -45,7 +46,7 @@ def ingest_feed(spark: SparkSession, feed: BronzeFeed) -> None:
 
 
 def run() -> None:
-    spark = SparkSession.builder.getOrCreate()
+    spark = get_spark()
     for feed in FEEDS:
         ingest_feed(spark, feed)
 

@@ -1,11 +1,5 @@
-FROM python:3.13.15-slim-bookworm
-
-# pyspark requires a JVM
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends openjdk-17-jre-headless \
-    && rm -rf /var/lib/apt/lists/*
-
-ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+# 3.12, not 3.13: databricks-connect pins numpy<2, which has no Python 3.13 wheel.
+FROM python:3.12-slim-bookworm
 
 WORKDIR /app
 

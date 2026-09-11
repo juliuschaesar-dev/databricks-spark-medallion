@@ -54,8 +54,8 @@ databricks-medallion/
 
 ## Prerequisites
 
-- A Databricks workspace with Unity Catalog enabled (Free Edition works — serverless SQL
-  warehouse + a default Unity Catalog metastore are included).
+- A Databricks workspace with Unity Catalog and serverless compute enabled (Free Edition works —
+  serverless SQL warehouse, serverless compute, and a default Unity Catalog metastore are included).
 - A personal access token: workspace **Settings → Developer → Access tokens → Generate new token**.
 - A SQL Warehouse HTTP path: **SQL Warehouses → (your warehouse) → Connection details**.
 
@@ -67,8 +67,11 @@ databricks-medallion/
    DATABRICKS_TOKEN=<personal-access-token>
    DATABRICKS_HTTP_PATH=/sql/1.0/warehouses/<warehouse-id>
    ```
+   `DATABRICKS_HOST`/`DATABRICKS_TOKEN` are picked up automatically by `databricks-connect`
+   (via [src/common/spark_session.py](src/common/spark_session.py)) to run Spark against your
+   workspace's serverless compute from your machine.
 
-2. Install dependencies:
+2. Install dependencies (Python 3.12):
    ```
    pip install -r requirements.txt
    ```
@@ -82,14 +85,16 @@ databricks-medallion/
    (`/Volumes/databricks_medallion/bronze/landing` by default — see `SOURCE_VOLUME_PATH` in `.env`).
 
 5. Run the pipeline (bronze → silver → gold), either:
-   - locally/CI, calling each stage's `run()`:
+   - locally, calling each stage's `run()` — this executes against your Databricks workspace's
+     serverless compute via `databricks-connect`, using the credentials from `.env`:
      ```
      python -m src.bronze.ingest
      python -m src.silver.run_silver
      python -m src.gold.run_gold
      ```
    - or import [notebooks/00_run_pipeline.py](notebooks/00_run_pipeline.py) into a Databricks
-     Workspace and run it (or attach it to a Databricks Job).
+     Workspace and run it (or attach it to a Databricks Job) — there it uses the notebook's
+     native Spark session instead of `databricks-connect`.
 
 ## Testing
 
@@ -102,17 +107,23 @@ run without a live Spark cluster, so they're safe to run in CI.
 
 ## Docker
 
-A [Dockerfile](Dockerfile) is provided for a consistent local dev/test environment (Python +
-JVM for pyspark), without needing Java installed on your machine:
+A [Dockerfile](Dockerfile) is provided for a consistent Python 3.12 environment, without needing
+a matching Python version installed on your machine:
 
 ```
 docker build -t databricks-medallion .
 docker run --rm databricks-medallion
 ```
 
-This runs the test suite (same checks as `pytest -v`) inside the container.
+This runs the test suite (same checks as `pytest -v`) inside the container, using a fake Spark
+session — it does not need or use `.env`.
 
-Note: this container is for local development/testing only — it does not connect to your
-Databricks workspace. The bronze/silver/gold pipeline itself (`src/bronze/ingest.py`,
-`src/silver/run_silver.py`, `src/gold/run_gold.py`) is meant to run on Databricks (as a notebook
-or Job), where a Spark session and Unity Catalog are already available.
+To run the actual pipeline against your Databricks workspace from the container instead, pass
+your `.env` at run time and override the command:
+
+```
+docker run --rm --env-file .env databricks-medallion python -m src.bronze.ingest
+```
+
+(`.env` is excluded from the image build via `.dockerignore` — it's only ever passed in at
+`docker run` time, never baked into the image.)
