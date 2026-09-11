@@ -10,6 +10,7 @@ SELECT
   o.payment_method,
   o.delivery_status,
   o.return_status,
+  o.return_reason,
   oi.quantity,
   oi.unit_price,
   oi.discount_percentage,
