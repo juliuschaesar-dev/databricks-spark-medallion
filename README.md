@@ -82,7 +82,11 @@ databricks-medallion/
    ```
 
 4. Upload the CSVs under `data_source/` to the landing Volume
-   (`/Volumes/databricks_medallion/bronze/landing` by default — see `SOURCE_VOLUME_PATH` in `.env`).
+   (`/Volumes/databricks_medallion/bronze/landing` by default — see `SOURCE_VOLUME_PATH` in `.env`):
+   ```
+   python -m uc_setup.upload_source_files
+   ```
+   or upload them manually via Catalog Explorer.
 
 5. Run the pipeline (bronze → silver → gold), either:
    - locally, calling each stage's `run()` — this executes against your Databricks workspace's
