@@ -7,3 +7,5 @@ SELECT
   SUM(profit)              AS total_profit
 FROM {catalog}.{gold_schema}.fact_sales
 GROUP BY return_status, return_reason;
+
+COMMENT ON TABLE {catalog}.{gold_schema}.dm_return_analysis IS 'Return/cancellation breakdown. Grain: 1 row / return_status+reason.';

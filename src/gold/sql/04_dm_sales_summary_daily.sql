@@ -11,3 +11,5 @@ SELECT
   ROUND(AVG(net_sales), 2)         AS avg_order_line_value
 FROM {catalog}.{gold_schema}.fact_sales
 GROUP BY order_date, sales_channel;
+
+COMMENT ON TABLE {catalog}.{gold_schema}.dm_sales_summary_daily IS 'Daily sales rollup. Grain: 1 row / day / channel.';

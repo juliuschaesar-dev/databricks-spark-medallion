@@ -7,6 +7,40 @@ from src.common.config import BRONZE_SCHEMA, CATALOG, GOLD_SCHEMA, SILVER_SCHEMA
 from src.common.spark_session import get_spark
 
 
+def _split_statements(sql_text: str) -> list[str]:
+    """Splits on ';', ignoring one inside a single-quoted string (with '' escaping) or a
+    '--' line comment."""
+    statements = []
+    current = []
+    in_string = False
+    in_comment = False
+    i = 0
+    while i < len(sql_text):
+        char = sql_text[i]
+        if in_comment:
+            current.append(char)
+            if char == "\n":
+                in_comment = False
+        elif char == "'":
+            if in_string and sql_text[i : i + 2] == "''":
+                current.append("''")
+                i += 2
+                continue
+            in_string = not in_string
+            current.append(char)
+        elif not in_string and sql_text[i : i + 2] == "--":
+            in_comment = True
+            current.append(char)
+        elif char == ";" and not in_string:
+            statements.append("".join(current))
+            current = []
+        else:
+            current.append(char)
+        i += 1
+    statements.append("".join(current))
+    return [s.strip() for s in statements if s.strip()]
+
+
 def run_sql_file(spark: SparkSession, path: Path) -> None:
     sql_text = path.read_text().format(
         catalog=CATALOG,
@@ -14,7 +48,7 @@ def run_sql_file(spark: SparkSession, path: Path) -> None:
         silver_schema=SILVER_SCHEMA,
         gold_schema=GOLD_SCHEMA,
     )
-    for statement in filter(None, (s.strip() for s in sql_text.split(";"))):
+    for statement in _split_statements(sql_text):
         spark.sql(statement)
 
 

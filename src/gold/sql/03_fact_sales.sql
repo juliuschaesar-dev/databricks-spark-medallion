@@ -11,6 +11,9 @@ SELECT
   o.delivery_status,
   o.return_status,
   o.return_reason,
+  o.marketing_channel,
+  o.campaign_name,
+  o.customer_rating,
   oi.quantity,
   oi.unit_price,
   oi.discount_percentage,
@@ -23,4 +26,16 @@ SELECT
   oi.profit
 FROM {catalog}.{silver_schema}.order_items_cleaned oi
 INNER JOIN {catalog}.{silver_schema}.orders_cleaned o
-  ON oi.order_id = o.order_id;
+  ON oi.order_id = o.order_id
+WHERE oi._is_deleted = FALSE
+  AND o._is_deleted = FALSE;
+
+COMMENT ON TABLE {catalog}.{gold_schema}.fact_sales IS 'Core sales fact. Grain: 1 row / order line item.';
+
+ALTER TABLE {catalog}.{gold_schema}.fact_sales ALTER COLUMN order_id SET NOT NULL;
+ALTER TABLE {catalog}.{gold_schema}.fact_sales ALTER COLUMN customer_id SET NOT NULL;
+ALTER TABLE {catalog}.{gold_schema}.fact_sales ALTER COLUMN product_id SET NOT NULL;
+ALTER TABLE {catalog}.{gold_schema}.fact_sales
+  ADD CONSTRAINT fk_fact_sales_customer FOREIGN KEY (customer_id) REFERENCES {catalog}.{gold_schema}.dim_customer;
+ALTER TABLE {catalog}.{gold_schema}.fact_sales
+  ADD CONSTRAINT fk_fact_sales_product FOREIGN KEY (product_id) REFERENCES {catalog}.{gold_schema}.dim_product;

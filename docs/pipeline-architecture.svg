@@ -79,8 +79,8 @@
     <text x="192" y="219" font-size="8.5" fill="#444">CSV &#8594; landing Volume &#8594;</text>
     <text x="192" y="231" font-size="8.5" fill="#444">raw_orders, raw_order_items,</text>
     <text x="192" y="243" font-size="8.5" fill="#444">raw_customers, raw_products</text>
-    <text x="192" y="258" font-size="8" fill="#888" font-style="italic">schema-as-is +</text>
-    <text x="192" y="269" font-size="8" fill="#888" font-style="italic">_source_file, _ingested_at</text>
+    <text x="192" y="258" font-size="8" fill="#888" font-style="italic">append + skip if unchanged</text>
+    <text x="192" y="269" font-size="8" fill="#888" font-style="italic">explicit schema, rescued data</text>
   </g>
 
   <!-- 3. Silver -->
@@ -93,8 +93,8 @@
     <text x="362" y="219" font-size="8.5" fill="#444">orders_cleaned</text>
     <text x="362" y="231" font-size="8.5" fill="#444">order_items_cleaned</text>
     <text x="362" y="243" font-size="8.5" fill="#444">customers/products_cleaned</text>
-    <text x="362" y="258" font-size="8" fill="#888" font-style="italic">dedup (ROW_NUMBER),</text>
-    <text x="362" y="269" font-size="8" fill="#888" font-style="italic">null handling, type casts</text>
+    <text x="362" y="258" font-size="8" fill="#888" font-style="italic">MERGE upsert +</text>
+    <text x="362" y="269" font-size="8" fill="#888" font-style="italic">soft-delete (_is_deleted)</text>
   </g>
 
   <!-- 4. Gold - star schema -->
@@ -152,10 +152,10 @@
     <circle cx="200" cy="382" r="10" fill="#e8f5e9" stroke="#2e7d32"/>
     <text x="200" y="386" text-anchor="middle" font-size="7.5" fill="#2e7d32" font-weight="bold">UC</text>
     <text x="216" y="379" font-size="10.5" font-weight="bold" fill="#222">uc_setup (init)</text>
-    <text x="192" y="397" font-size="8" fill="#444">run_uc_setup.py</text>
-    <text x="192" y="409" font-size="8" fill="#444">CREATE CATALOG/SCHEMA</text>
-    <text x="192" y="421" font-size="8" fill="#444">+ landing Volume</text>
-    <text x="192" y="436" font-size="7.5" fill="#888" font-style="italic">one-shot, metastore admin</text>
+    <text x="192" y="397" font-size="8" fill="#444">run_uc_setup.py +</text>
+    <text x="192" y="409" font-size="8" fill="#444">upload_source_files.py</text>
+    <text x="192" y="421" font-size="8" fill="#444">CATALOG/SCHEMA/Volume + CSVs</text>
+    <text x="192" y="436" font-size="7.5" fill="#888" font-style="italic">one-shot bootstrap + upload</text>
   </g>
 
   <g>
@@ -163,10 +163,10 @@
     <circle cx="450" cy="382" r="10" fill="#e8f5e9" stroke="#2e7d32"/>
     <text x="450" y="386" text-anchor="middle" font-size="7.5" fill="#2e7d32" font-weight="bold">&#9654;</text>
     <text x="466" y="379" font-size="10.5" font-weight="bold" fill="#222">orchestrator</text>
-    <text x="442" y="397" font-size="8" fill="#444">notebooks/00_run_pipeline.py</text>
-    <text x="442" y="409" font-size="8" fill="#444">bronze.run() &#8594; run_silver()</text>
-    <text x="442" y="421" font-size="8" fill="#444">&#8594; run_gold(), in order</text>
-    <text x="442" y="436" font-size="7.5" fill="#888" font-style="italic">Databricks notebook / Job</text>
+    <text x="442" y="397" font-size="8" fill="#444">00_run_pipeline.py (manual)</text>
+    <text x="442" y="409" font-size="8" fill="#444">or databricks.yml Job:</text>
+    <text x="442" y="421" font-size="8" fill="#444">bronze &#8594; silver &#8594; gold tasks</text>
+    <text x="442" y="436" font-size="7.5" fill="#888" font-style="italic">manual notebook, or 3-task Job</text>
   </g>
 
   <!-- green dashed orchestration arrows going up into the layer boxes -->

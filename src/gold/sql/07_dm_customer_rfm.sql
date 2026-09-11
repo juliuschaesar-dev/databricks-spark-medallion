@@ -24,3 +24,5 @@ SELECT
   a.monetary
 FROM agg a
 CROSS JOIN dataset_bounds b;
+
+COMMENT ON TABLE {catalog}.{gold_schema}.dm_customer_rfm IS 'Recency/Frequency/Monetary segmentation. Grain: 1 row / customer.';
