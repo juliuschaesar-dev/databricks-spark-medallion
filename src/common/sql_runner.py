@@ -3,7 +3,7 @@ from pathlib import Path
 
 from pyspark.sql import SparkSession
 
-from src.common.config import BRONZE_SCHEMA, CATALOG, GOLD_SCHEMA, SILVER_SCHEMA
+from src.common.constants import SQL_PLACEHOLDERS
 from src.common.spark_session import get_spark
 
 
@@ -42,12 +42,7 @@ def _split_statements(sql_text: str) -> list[str]:
 
 
 def run_sql_file(spark: SparkSession, path: Path) -> None:
-    sql_text = path.read_text().format(
-        catalog=CATALOG,
-        bronze_schema=BRONZE_SCHEMA,
-        silver_schema=SILVER_SCHEMA,
-        gold_schema=GOLD_SCHEMA,
-    )
+    sql_text = path.read_text().format(**SQL_PLACEHOLDERS)
     for statement in _split_statements(sql_text):
         spark.sql(statement)
 

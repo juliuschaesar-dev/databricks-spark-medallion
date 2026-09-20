@@ -1,5 +1,5 @@
 -- Grain: one row per order line item.
-CREATE OR REPLACE TABLE {catalog}.{gold_schema}.fact_sales AS
+CREATE OR REPLACE TABLE {fact_sales} AS
 SELECT
   oi.order_id,
   oi.product_id,
@@ -24,18 +24,18 @@ SELECT
   oi.net_sales,
   oi.product_cost,
   oi.profit
-FROM {catalog}.{silver_schema}.order_items_cleaned oi
-INNER JOIN {catalog}.{silver_schema}.orders_cleaned o
+FROM {order_items_cleaned} oi
+INNER JOIN {orders_cleaned} o
   ON oi.order_id = o.order_id
 WHERE oi._is_deleted = FALSE
   AND o._is_deleted = FALSE;
 
-COMMENT ON TABLE {catalog}.{gold_schema}.fact_sales IS 'Core sales fact. Grain: 1 row / order line item.';
+COMMENT ON TABLE {fact_sales} IS 'Core sales fact. Grain: 1 row / order line item.';
 
-ALTER TABLE {catalog}.{gold_schema}.fact_sales ALTER COLUMN order_id SET NOT NULL;
-ALTER TABLE {catalog}.{gold_schema}.fact_sales ALTER COLUMN customer_id SET NOT NULL;
-ALTER TABLE {catalog}.{gold_schema}.fact_sales ALTER COLUMN product_id SET NOT NULL;
-ALTER TABLE {catalog}.{gold_schema}.fact_sales
-  ADD CONSTRAINT fk_fact_sales_customer FOREIGN KEY (customer_id) REFERENCES {catalog}.{gold_schema}.dim_customer;
-ALTER TABLE {catalog}.{gold_schema}.fact_sales
-  ADD CONSTRAINT fk_fact_sales_product FOREIGN KEY (product_id) REFERENCES {catalog}.{gold_schema}.dim_product;
+ALTER TABLE {fact_sales} ALTER COLUMN order_id SET NOT NULL;
+ALTER TABLE {fact_sales} ALTER COLUMN customer_id SET NOT NULL;
+ALTER TABLE {fact_sales} ALTER COLUMN product_id SET NOT NULL;
+ALTER TABLE {fact_sales}
+  ADD CONSTRAINT fk_fact_sales_customer FOREIGN KEY (customer_id) REFERENCES {dim_customer};
+ALTER TABLE {fact_sales}
+  ADD CONSTRAINT fk_fact_sales_product FOREIGN KEY (product_id) REFERENCES {dim_product};

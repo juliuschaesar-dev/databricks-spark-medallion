@@ -1,4 +1,4 @@
-CREATE OR REPLACE TABLE {catalog}.{gold_schema}.dm_product_performance AS
+CREATE OR REPLACE TABLE {dm_product_performance} AS
 SELECT
   p.product_id,
   p.product_name,
@@ -9,9 +9,9 @@ SELECT
   SUM(f.net_sales)                AS total_net_sales,
   SUM(f.profit)                   AS total_profit,
   ROUND(AVG(p.product_rating), 2) AS avg_rating
-FROM {catalog}.{gold_schema}.fact_sales f
-INNER JOIN {catalog}.{gold_schema}.dim_product p
+FROM {fact_sales} f
+INNER JOIN {dim_product} p
   ON f.product_id = p.product_id
 GROUP BY p.product_id, p.product_name, p.product_category, p.brand;
 
-COMMENT ON TABLE {catalog}.{gold_schema}.dm_product_performance IS 'Sales & profit by product. Grain: 1 row / product.';
+COMMENT ON TABLE {dm_product_performance} IS 'Sales & profit by product. Grain: 1 row / product.';

@@ -1,8 +1,8 @@
 -- RFM (Recency / Frequency / Monetary) segmentation, one row per customer.
-CREATE OR REPLACE TABLE {catalog}.{gold_schema}.dm_customer_rfm AS
+CREATE OR REPLACE TABLE {dm_customer_rfm} AS
 WITH customer_orders AS (
   SELECT customer_id, order_id, order_date, net_sales
-  FROM {catalog}.{gold_schema}.fact_sales
+  FROM {fact_sales}
 ),
 agg AS (
   SELECT
@@ -25,4 +25,4 @@ SELECT
 FROM agg a
 CROSS JOIN dataset_bounds b;
 
-COMMENT ON TABLE {catalog}.{gold_schema}.dm_customer_rfm IS 'Recency/Frequency/Monetary segmentation. Grain: 1 row / customer.';
+COMMENT ON TABLE {dm_customer_rfm} IS 'Recency/Frequency/Monetary segmentation. Grain: 1 row / customer.';

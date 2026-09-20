@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS {catalog}.{silver_schema}.orders_cleaned AS
+CREATE TABLE IF NOT EXISTS {orders_cleaned} AS
 SELECT
   order_id,
   CAST(order_date AS DATE)                 AS order_date,
@@ -38,12 +38,12 @@ SELECT
   current_timestamp()                      AS _cleaned_at,
   FALSE                                     AS _is_deleted,
   CAST(NULL AS TIMESTAMP)                   AS _deleted_at
-FROM {catalog}.{bronze_schema}.raw_orders
+FROM {raw_orders}
 WHERE 1 = 0;
 
 -- Upsert latest-per-order from bronze; rows no longer present in bronze are soft-deleted
 -- (flagged, not dropped) so silver keeps a full audit trail of what left the source.
-MERGE WITH SCHEMA EVOLUTION INTO {catalog}.{silver_schema}.orders_cleaned AS target
+MERGE WITH SCHEMA EVOLUTION INTO {orders_cleaned} AS target
 USING (
   SELECT
     order_id,
@@ -84,7 +84,7 @@ USING (
     current_timestamp()                      AS _cleaned_at,
     FALSE                                     AS _is_deleted,
     CAST(NULL AS TIMESTAMP)                   AS _deleted_at
-  FROM {catalog}.{bronze_schema}.raw_orders
+  FROM {raw_orders}
   WHERE order_id IS NOT NULL
     AND customer_id IS NOT NULL
   QUALIFY ROW_NUMBER() OVER (PARTITION BY order_id ORDER BY _ingested_at DESC) = 1
@@ -95,4 +95,4 @@ WHEN NOT MATCHED THEN INSERT *
 WHEN NOT MATCHED BY SOURCE AND target._is_deleted = FALSE THEN
   UPDATE SET _is_deleted = TRUE, _deleted_at = current_timestamp();
 
-COMMENT ON TABLE {catalog}.{silver_schema}.orders_cleaned IS 'Deduplicated, type-cast orders; soft-deleted rows kept and flagged via _is_deleted/_deleted_at. Grain: 1 row / order.';
+COMMENT ON TABLE {orders_cleaned} IS 'Deduplicated, type-cast orders; soft-deleted rows kept and flagged via _is_deleted/_deleted_at. Grain: 1 row / order.';

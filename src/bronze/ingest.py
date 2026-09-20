@@ -5,7 +5,8 @@ from pyspark.sql import DataFrame, SparkSession
 from pyspark.sql import functions as F
 from pyspark.sql.types import StringType, StructField, StructType
 
-from src.common.config import BRONZE_SCHEMA, SOURCE_VOLUME_PATH, table
+from src.common.config import SOURCE_VOLUME_PATH
+from src.common.constants import RAW_CUSTOMERS, RAW_ORDER_ITEMS, RAW_ORDERS, RAW_PRODUCTS
 from src.common.spark_session import get_spark
 
 
@@ -56,14 +57,14 @@ ORDER_ITEM_SCHEMA = _string_schema(
 )
 
 FEEDS = [
-    BronzeFeed("customer_master.csv", table(BRONZE_SCHEMA, "raw_customers"), CUSTOMER_SCHEMA),
-    BronzeFeed("product_catalog.csv", table(BRONZE_SCHEMA, "raw_products"), PRODUCT_SCHEMA),
+    BronzeFeed("customer_master.csv", RAW_CUSTOMERS, CUSTOMER_SCHEMA),
+    BronzeFeed("product_catalog.csv", RAW_PRODUCTS, PRODUCT_SCHEMA),
     BronzeFeed(
         "ecommerce_sales_customer_analytics_150k.csv",
-        table(BRONZE_SCHEMA, "raw_orders"),
+        RAW_ORDERS,
         ORDER_SCHEMA,
     ),
-    BronzeFeed("order_items.csv", table(BRONZE_SCHEMA, "raw_order_items"), ORDER_ITEM_SCHEMA),
+    BronzeFeed("order_items.csv", RAW_ORDER_ITEMS, ORDER_ITEM_SCHEMA),
 ]
 
 

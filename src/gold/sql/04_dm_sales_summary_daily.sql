@@ -1,4 +1,4 @@
-CREATE OR REPLACE TABLE {catalog}.{gold_schema}.dm_sales_summary_daily AS
+CREATE OR REPLACE TABLE {dm_sales_summary_daily} AS
 SELECT
   order_date,
   sales_channel,
@@ -9,7 +9,7 @@ SELECT
   SUM(net_sales)                   AS total_net_sales,
   SUM(profit)                      AS total_profit,
   ROUND(AVG(net_sales), 2)         AS avg_order_line_value
-FROM {catalog}.{gold_schema}.fact_sales
+FROM {fact_sales}
 GROUP BY order_date, sales_channel;
 
-COMMENT ON TABLE {catalog}.{gold_schema}.dm_sales_summary_daily IS 'Daily sales rollup. Grain: 1 row / day / channel.';
+COMMENT ON TABLE {dm_sales_summary_daily} IS 'Daily sales rollup. Grain: 1 row / day / channel.';

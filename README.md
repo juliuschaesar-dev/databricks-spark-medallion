@@ -52,11 +52,11 @@ Gold layer has two kinds of tables:
 
 ```
 databricks-medallion/
-├── databricks.yml        Databricks Asset Bundle: deploys the 3-task Job (bronze/silver/gold)
+├── databricks.yml        Declarative Automation Bundle: deploys the 3-task Job (bronze/silver/gold)
 ├── notebooks/            per-stage notebooks (01/02/03) used by the Job, plus a manual
 │                         single-notebook runner (00_run_pipeline.py)
 ├── src/
-│   ├── common/           shared config + SQL runner
+│   ├── common/           shared config + table name constants + SQL runner
 │   ├── bronze/           CSV → Delta ingestion (Python)
 │   ├── silver/           cleaning/dedup transforms (SQL)
 │   └── gold/             joins + aggregations (SQL)
@@ -84,6 +84,10 @@ databricks-medallion/
 
 ## Setup
 
+Everything below runs via `docker run`, so your local Python version doesn't matter — the
+[Dockerfile](Dockerfile) pins Python 3.12 because that's the only version `databricks-connect`
+currently supports.
+
 1. Copy `.env.example` to `.env` and fill in your workspace values:
    ```
    DATABRICKS_HOST=https://<your-workspace>.cloud.databricks.com
@@ -94,30 +98,30 @@ databricks-medallion/
    (via [src/common/spark_session.py](src/common/spark_session.py)) to run Spark against your
    workspace's serverless compute from your machine.
 
-2. Install dependencies (Python 3.12):
+2. Build the image:
    ```
-   pip install -r requirements.txt
+   docker build -t databricks-medallion .
    ```
 
 3. Bootstrap Unity Catalog (once, as a metastore admin):
    ```
-   python -m uc_setup.run_uc_setup
+   docker run --rm --env-file .env databricks-medallion python -m uc_setup.run_uc_setup
    ```
 
 4. Upload the CSVs under `data_source/` to the landing Volume
    (`/Volumes/databricks_medallion/bronze/landing` by default — see `SOURCE_VOLUME_PATH` in `.env`):
    ```
-   python -m uc_setup.upload_source_files
+   docker run --rm --env-file .env databricks-medallion python -m uc_setup.upload_source_files
    ```
    or upload them manually via Catalog Explorer.
 
 5. Run the pipeline (bronze → silver → gold), either:
-   - locally, calling each stage's `run()` — this executes against your Databricks workspace's
-     serverless compute via `databricks-connect`, using the credentials from `.env`:
+   - via the container, calling each stage's `run()` — this executes against your Databricks
+     workspace's serverless compute via `databricks-connect`, using the credentials from `.env`:
      ```
-     python -m src.bronze.ingest
-     python -m src.silver.run_silver
-     python -m src.gold.run_gold
+     docker run --rm --env-file .env databricks-medallion python -m src.bronze.ingest
+     docker run --rm --env-file .env databricks-medallion python -m src.silver.run_silver
+     docker run --rm --env-file .env databricks-medallion python -m src.gold.run_gold
      ```
    - or import [notebooks/00_run_pipeline.py](notebooks/00_run_pipeline.py) into a Databricks
      Workspace and run it — there it uses the notebook's native Spark session instead of
@@ -125,9 +129,12 @@ databricks-medallion/
    - or deploy it as a proper Databricks Job (see below) — recommended for anything scheduled
      or production-like.
 
+(`.env` is excluded from the image build via `.dockerignore` — it's only ever passed in at
+`docker run` time, never baked into the image.)
+
 ## Deploying as a Databricks Job
 
-[databricks.yml](databricks.yml) is a [Databricks Asset Bundle](https://docs.databricks.com/aws/en/dev-tools/bundles/)
+[databricks.yml](databricks.yml) is a [Declarative Automation Bundle](https://docs.databricks.com/aws/en/dev-tools/bundles/)
 that deploys `medallion_pipeline` as a **3-task Job** — `bronze` → `silver` → `gold` — using
 [notebooks/01_bronze.py](notebooks/01_bronze.py), [02_silver.py](notebooks/02_silver.py), and
 [03_gold.py](notebooks/03_gold.py). Unlike the single-notebook run above, each task is
@@ -147,35 +154,16 @@ databricks bundle run medallion_pipeline -t dev
 ## Testing
 
 ```
-pytest -v
-```
-
-Tests are schema/logic checks (SQL placeholder substitution, config, source CSV columns) that
-run without a live Spark cluster, so they're safe to run in CI.
-
-## Docker
-
-A [Dockerfile](Dockerfile) is provided for a consistent Python 3.12 environment, without needing
-a matching Python version installed on your machine:
-
-```
-docker build -t databricks-medallion .
 docker run --rm databricks-medallion
 ```
 
-This runs the test suite (same checks as `pytest -v`) inside the container, using a fake Spark
-session — it does not need or use `.env`.
+Runs `pytest -v` (the image's default `CMD`) against a fake Spark session — no `.env` or live
+cluster needed, so it's safe to run in CI.
 
-To run the actual pipeline against your Databricks workspace from the container instead, pass
-your `.env` at run time and override the command:
+## Stopping
+
+Containers auto-remove on exit (`--rm`). To remove the built image:
 
 ```
-docker run --rm --env-file .env databricks-medallion python -m uc_setup.run_uc_setup
-docker run --rm --env-file .env databricks-medallion python -m uc_setup.upload_source_files
-docker run --rm --env-file .env databricks-medallion python -m src.bronze.ingest
-docker run --rm --env-file .env databricks-medallion python -m src.silver.run_silver
-docker run --rm --env-file .env databricks-medallion python -m src.gold.run_gold
+docker rmi databricks-medallion
 ```
-
-(`.env` is excluded from the image build via `.dockerignore` — it's only ever passed in at
-`docker run` time, never baked into the image.)
