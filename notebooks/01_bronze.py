@@ -5,6 +5,12 @@
 
 # COMMAND ----------
 
+import sys
+
+sys.path.append("..")
+
+# COMMAND ----------
+
 from src.bronze import ingest
 
 ingest.run()

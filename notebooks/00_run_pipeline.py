@@ -12,6 +12,12 @@
 
 # COMMAND ----------
 
+import sys
+
+sys.path.append("..")
+
+# COMMAND ----------
+
 from src.bronze import ingest as bronze
 from src.gold import run_gold as gold
 from src.silver import run_silver as silver

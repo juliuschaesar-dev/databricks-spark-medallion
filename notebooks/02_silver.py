@@ -6,6 +6,12 @@
 
 # COMMAND ----------
 
+import sys
+
+sys.path.append("..")
+
+# COMMAND ----------
+
 from src.silver import run_silver
 
 run_silver.run()

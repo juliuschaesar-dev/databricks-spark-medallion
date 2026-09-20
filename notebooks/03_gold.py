@@ -6,6 +6,12 @@
 
 # COMMAND ----------
 
+import sys
+
+sys.path.append("..")
+
+# COMMAND ----------
+
 from src.gold import run_gold
 
 run_gold.run()
