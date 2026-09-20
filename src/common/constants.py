@@ -1,7 +1,7 @@
 """Fully-qualified table name constants, shared by every script and SQL template so a
 table is named in exactly one place instead of being hardcoded per file.
 """
-from src.common.config import BRONZE_SCHEMA, GOLD_SCHEMA, SILVER_SCHEMA, table
+from src.common.config import CATALOG, BRONZE_SCHEMA, GOLD_SCHEMA, SILVER_SCHEMA, table
 
 # Bronze: raw, untyped ingest of the source CSVs
 RAW_CUSTOMERS = table(BRONZE_SCHEMA, "raw_customers")
@@ -30,7 +30,13 @@ DM_MARKETING_CHANNEL_PERFORMANCE = table(GOLD_SCHEMA, "dm_marketing_channel_perf
 
 # Keyed by bare table name, so .sql templates can write e.g. {raw_customers} instead of
 # hardcoding {catalog}.{bronze_schema}.raw_customers. Consumed by src/common/sql_runner.py.
+# catalog/*_schema are also included for templates (e.g. uc_setup) that create the
+# catalog/schemas themselves rather than referencing a full table.
 SQL_PLACEHOLDERS = {
+    "catalog": CATALOG,
+    "bronze_schema": BRONZE_SCHEMA,
+    "silver_schema": SILVER_SCHEMA,
+    "gold_schema": GOLD_SCHEMA,
     "raw_customers": RAW_CUSTOMERS,
     "raw_products": RAW_PRODUCTS,
     "raw_orders": RAW_ORDERS,

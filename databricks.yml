@@ -1,4 +1,4 @@
-# Databricks Asset Bundle: deploys the medallion pipeline as a 3-task Databricks Job
+# Declarative Automation Bundle: deploys the medallion pipeline as a 3-task Databricks Job
 # (bronze -> silver -> gold) instead of one monolithic notebook, so a failed stage can be
 # retried on its own from the Jobs UI without re-running the stages before it.
 #

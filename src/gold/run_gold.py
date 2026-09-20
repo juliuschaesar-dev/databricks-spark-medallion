@@ -1,12 +1,8 @@
-from pathlib import Path
-
-from src.common.sql_runner import run_layer
-
-SQL_DIR = Path(__file__).parent / "sql"
+from src.common.sql_runner import run_layer_module
 
 
 def run() -> None:
-    run_layer(SQL_DIR)
+    run_layer_module(__file__)
 
 
 if __name__ == "__main__":

@@ -157,9 +157,6 @@ databricks bundle run medallion_pipeline -t dev
 docker run --rm databricks-medallion
 ```
 
-Runs `pytest -v` (the image's default `CMD`) against a fake Spark session — no `.env` or live
-cluster needed, so it's safe to run in CI.
-
 ## Stopping
 
 Containers auto-remove on exit (`--rm`). To remove the built image:

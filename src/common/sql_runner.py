@@ -56,3 +56,9 @@ def run_sql_dir(spark: SparkSession, directory: Path) -> None:
 def run_layer(sql_dir: Path) -> None:
     """Gets a Spark session and runs every .sql file in `sql_dir`, in order."""
     run_sql_dir(get_spark(), sql_dir)
+
+
+def run_layer_module(module_file: str) -> None:
+    """Convenience for a `run_X.py` layer module (e.g. src/silver/run_silver.py): runs every
+    .sql file in the `sql/` directory next to it. Pass the module's own `__file__`."""
+    run_layer(Path(module_file).parent / "sql")
