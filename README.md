@@ -84,9 +84,7 @@ databricks-medallion/
 
 ## Setup
 
-Everything below runs via `docker run`, so your local Python version doesn't matter — the
-[Dockerfile](Dockerfile) pins Python 3.12 because that's the only version `databricks-connect`
-currently supports.
+Everything below runs via `docker run`, so your local Python version doesn't matter.
 
 1. Copy `.env.example` to `.env` and fill in your workspace values:
    ```
