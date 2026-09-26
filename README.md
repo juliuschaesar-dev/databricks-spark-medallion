@@ -149,6 +149,9 @@ databricks bundle deploy -t dev
 databricks bundle run medallion_pipeline -t dev
 ```
 
+Once deployed, the job appears in the Databricks Workspace under **Jobs & Pipelines**, with each
+run showing the `bronze` → `silver` → `gold` tasks and their status:
+
 ![Databricks Job run showing bronze, silver, and gold tasks succeeding](docs/screenshots/databricks-job-run.png)
 
 ## Testing
