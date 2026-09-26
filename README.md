@@ -149,6 +149,8 @@ databricks bundle deploy -t dev
 databricks bundle run medallion_pipeline -t dev
 ```
 
+![Databricks Job run showing bronze, silver, and gold tasks succeeding](docs/screenshots/databricks-job-run.png)
+
 ## Testing
 
 ```
